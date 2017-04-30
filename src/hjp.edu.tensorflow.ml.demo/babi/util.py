@@ -8,7 +8,7 @@ def load_task(data_dir, task_id, only_supporting = False):
     assert task_id > 0 and task_id < 21
     
     files = os.listdir(data_dir)
-    files = [os.path.joint(data_dir, f) for f in files]
+    files = [os.path.join(data_dir, f) for f in files]
     s = 'qa{}_'.format(task_id)
     train_file = [f for f in files if s in f and 'train' in f][0]
     test_file = [f for f in files if s in f and 'test' in f][0]
@@ -19,7 +19,7 @@ def load_task(data_dir, task_id, only_supporting = False):
 def tokenize(sent):
     return [x.strip() for x in re.split('(\W+)?', sent) if x.strip()]
 
-def parse_stories(line, only_supporting = False):
+def parse_stories(lines, only_supporting = False):
     data = []
     story = []
     for line in lines:
@@ -54,7 +54,7 @@ def parse_stories(line, only_supporting = False):
 
 def get_stories(f, only_supporting = False):
     with open(f) as f:
-        return parse_stories(f.readline(), only_supporting = only_supporting)
+        return parse_stories(f.readlines(), only_supporting = only_supporting)
     
 def vectorize_data(data, word_idx, sentence_size, memory_size):
     S = []
