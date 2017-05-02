@@ -24,11 +24,11 @@ Run the included shell script to fetch the data
 	
 Use 'single.py' for running a [single bAbI task].
 
-	python single.py
+	$	python single.py
 	
 Use 'joint.py' for running a [joint model on all bAbI tasks].
 
-	python joint.py
+	$	python joint.py
 	
 	
 ### Reference
