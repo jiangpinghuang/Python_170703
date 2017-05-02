@@ -20,11 +20,11 @@ Run the included shell script to fetch the data
 	
 Use 'train.py' to train the DMN+ model contained in 'dmn.py'
 
-	$	python train.py -b 1
+	$ python train.py -b 1
 	
 After training is finished, test the model on a specified task
 
-	$	python test.py -b 1
+	$ python test.py -b 1
 	
 	
 ### Reference

@@ -26,11 +26,11 @@ and put the 'data' folder into 'lang' folder.
 	
 Use 'main.py' for running a model with 2 hops and memory size of 20, run the following command:
 
-	$	python main.py --nhop 2 --mem_size 20
+	$ python main.py --nhop 2 --mem_size 20
 	
 To see all training options, run the following command:
 
-	$	python main.py --help
+	$ python main.py --help
 	
 	
 ### Reference
