@@ -115,67 +115,82 @@ def read_msc_file(trainfile, testfile):
                     
     return word_to_index, index_to_word, MAX_SENT_LENGTH, MAX_CHUNK_LENGTH, TRAIN_SENT_NUM, TEST_SENT_NUM
 
-def build_chunk_vec(sent, line, dim):
+def build_chunk_vec(sent, line, dim, mcl):
     num = 0
     tag = line.split(' ')
     for i in range(len(tag)):
-        print(tag[i])
+        # print(tag[i])
         if tag[i][0:1] == 'I':
             num += 1
             
-    chunk = torch.FloatTensor(len(tag) - num, dim)
+    chunk = torch.FloatTensor(mcl, dim).zero_()
     
     id = 0    
     
     for k in range(len(tag)):
         if tag[k][0:1] == 'B':
             if k == 0:
-                chunk[id:id+1] = sent[k:k+1]
+                chunk[id:id + 1] = sent[k:k + 1]
             else:
                 id += 1
-                chunk[id:id+1] = sent[k:k+1]
+                chunk[id:id + 1] = sent[k:k + 1]
         elif tag[k][0:1] == 'I':
-            chunk[id:id+1] = chunk[id:id+1].mul_(sent[k:k+1])
+            chunk[id:id + 1] = chunk[id:id + 1].add_(sent[k:k + 1])
         else:
             if k == 0:
-                chunk[id:id+1] = sent[k:k+1]
+                chunk[id:id + 1] = sent[k:k + 1]
             else:
                 id += 1
-                chunk[id:id+1] = sent[k:k+1]
+                chunk[id:id + 1] = sent[k:k + 1]
 
     return chunk          
 
 
-def build_sent_vec(filepath, embed, dim):
+def build_sent_vec(filepath, embed, dim, sn, msl, mcl):
     oov = 0
+    idx = 0
+    lsm = torch.FloatTensor(sn, msl, dim).zero_()
+    rsm = torch.FloatTensor(sn, msl, dim).zero_()
+    lcm = torch.FloatTensor(sn, mcl, dim).zero_()
+    rcm = torch.FloatTensor(sn, mcl, dim).zero_()
+    lbl = torch.IntTensor(sn).zero_()
     with open(filepath, 'r') as f:
         for line in f:
+            print('idx: ', idx)
             sents = line.split('\t')
+            lbl[idx:idx+1] = int(sents[0])
             lsent = sents[2].lower().split(' ')
             rsent = sents[6].lower().split(' ')
-            lsentm = torch.FloatTensor(len(lsent), dim)
-            rsentm = torch.FloatTensor(len(rsent), dim)
-            
+            # lsentm = torch.FloatTensor(len(lsent), dim)
+            # rsentm = torch.FloatTensor(len(rsent), dim)
+            lsentm = torch.FloatTensor(msl, dim).zero_()
+            rsentm = torch.FloatTensor(msl, dim).zero_()            
             for i in range(len(lsent)):
                 if lsent[i] in embed:
-                    lsentm[i:i+1] = torch.from_numpy(embed.get(lsent[i]))
+                    lsentm[i:i + 1] = torch.from_numpy(embed.get(lsent[i]))
                 else:
                     oov += 1
-                    lsentm[i:i+1] = torch.FloatTensor(1, dim).normal_(0, 0.1)
-            lchunk = build_chunk_vec(lsentm, sents[4], dim)
+                    lsentm[i:i + 1] = torch.FloatTensor(1, dim).normal_(0, 0.1)
+            lchunk = build_chunk_vec(lsentm, sents[4], dim, mcl)
             
             for i in range(len(rsent)):
                 if rsent[i] in embed:
-                    rsentm[i:i+1] = torch.from_numpy(embed.get(rsent[i]))
+                    rsentm[i:i + 1] = torch.from_numpy(embed.get(rsent[i]))
                 else:
                     oov += 1
-                    rsentm[i:i+1] = torch.FloatTensor(1, dim).normal_(0, 0.1)
-            rchunk = build_chunk_vec(rsentm, sents[8], dim)
+                    rsentm[i:i + 1] = torch.FloatTensor(1, dim).normal_(0, 0.1)
+            rchunk = build_chunk_vec(rsentm, sents[8], dim, mcl)
             
-            print(lsentm)
-            print(lchunk)
-            print(rsentm)
-            print(rchunk)
+            # print(lsentm)
+            # print(lchunk)
+            # print(rsentm)
+            # print(rchunk)
+            lsm[idx:idx + 1, :, :] = lsentm
+            rsm[idx:idx + 1, :, :] = rsentm
+            lcm[idx:idx + 1, :, :] = lchunk
+            rcm[idx:idx + 1, :, :] = rchunk
+            idx += 1
+    return lsm, rsm, lcm, rcm, lbl
             
             
 def main():
@@ -192,13 +207,13 @@ def main():
     embed = load_embed_file(embfile)
     
     word_to_index, index_to_word, msl, mcl, trsn, tesn = read_msc_file(trainfile, testfile)
+    for i in range(50):
+        ltrsent, rtrsent, ltrchunk, rtrchunk, trlabel = build_sent_vec(trainfile, embed, dim, trsn, msl, mcl)
+        ltesent, rtesent, ltechunk, rtechunk, telabel = build_sent_vec(testfile, embed, dim, trsn, msl, mcl)
 
-    build_sent_vec(demofile, embed, dim)
-    
-    print('msl: ', msl)
-    print('mcl: ', mcl)
-    print('trsn: ', trsn)
-    print('tesn: ', tesn)
+    print(trlabel[0:10])
+    print(telabel[100:110])
+    print('finished!')
 
 if __name__ == '__main__':
     main()
