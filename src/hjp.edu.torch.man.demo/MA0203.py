@@ -89,7 +89,7 @@ class RNN(nn.Module):
         super(RNN, self).__init__()
         
         self.hidden_size = hidden_size
-        input_size = data_size + hidden_size
+        input_size = data_size + hidden_size  # Why?
         print('input_size: ')
         print(input_size)
         self.i2h = nn.Linear(input_size, hidden_size)
