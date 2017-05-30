@@ -1,6 +1,6 @@
 import numpy as np
 
-N, D_in, H, D_out = 4, 10, 5, 2
+N, D_in, H, D_out = 1, 2, 2, 1
 
 x = np.random.randn(N, D_in)
 y = np.random.randn(N, D_out)
@@ -19,7 +19,7 @@ print(w2)
 
 learning_rate = 1e-2
 
-for t in range(500):
+for t in range(3):
     h = x.dot(w1)
     print('h: ')
     print(h)
@@ -36,14 +36,44 @@ for t in range(500):
     print(y_pred - y)
     
     loss = np.square(y_pred - y).sum()
+    print('loss: ')
     print(t, loss)
     
     grad_y_pred = 2.0 * (y_pred - y)
+    print('y_pred - y: ')
+    print(y_pred - y)
+    print('grad_y_pred: ')
+    print(grad_y_pred)
+    print('h_relu: ')
+    print(h_relu)
+    print(h_relu.T)
     grad_w2 = h_relu.T.dot(grad_y_pred)
+    print('grad_w2: ')
+    print(grad_w2)
+    print('w2.T: ')
+    print(w2.T)
     grad_h_relu = grad_y_pred.dot(w2.T)
     grad_h = grad_h_relu.copy()
+    print('grad_h_relu: ')
+    print(grad_h_relu)
+    print('grad_h: ')
+    print(grad_h)
     grad_h[h < 0] = 0
+    print('grad_h < 0: ')
+    print(grad_h)
+    print('x.T: ')
+    print(x.T)
     grad_w1 = x.T.dot(grad_h)
+    print('grad_w1: ')
+    print(grad_w1)
     
+    print('w1: ')
+    print(w1)
     w1 -= learning_rate * grad_w1
+    print('updated w1: ')
+    print(w1)
+    print('w2: ')
+    print(w2)
     w2 -= learning_rate * grad_w2
+    print('updated w2: ')
+    print(w2)
