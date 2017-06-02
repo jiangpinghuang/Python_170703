@@ -57,16 +57,18 @@ loss_function = nn.NLLLoss()
 model = NGramLanguageModeler(len(vocab), EMBEDDING_DIM, CONTEXT_SIZE)
 optimizer = optim.SGD(model.parameters(), lr=0.001)
 
-for epoch in range(10):
+for epoch in range(3):
     total_loss = torch.Tensor([0])
     
     for context, target in trigrams:
          context_idxs = [word_to_ix[w] for w in context]
+         print context_idxs
          context_var = autograd.Variable(torch.LongTensor(context_idxs))
-         
+         print context_var
          model.zero_grad()
          
          log_probs = model(context_var)
+         print log_probs
          
          loss = loss_function(log_probs, autograd.Variable(
              torch.LongTensor([word_to_ix[target]])))

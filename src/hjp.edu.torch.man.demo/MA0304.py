@@ -15,7 +15,7 @@ class MyRelu(torch.torch.autograd.Function):
     
 dtype = torch.FloatTensor
 
-N, D_in, H, D_out = 64, 1000, 100, 10
+N, D_in, H, D_out = 100, 1000, 100, 10
 
 x = Variable(torch.randn(N, D_in).type(dtype), requires_grad=False)
 y = Variable(torch.randn(N, D_out).type(dtype), requires_grad=False)
@@ -25,7 +25,7 @@ w2 = Variable(torch.randn(H, D_out).type(dtype), requires_grad=True)
 
 learning_rate = 1e-6
 
-for t in range(500):
+for t in range(5000):
     relu = MyRelu()
     
     y_pred = relu(x.mm(w1)).mm(w2)

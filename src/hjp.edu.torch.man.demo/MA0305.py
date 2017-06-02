@@ -1,7 +1,7 @@
 import tensorflow as tf
 import numpy as np
 
-N, D_in, H, D_out = 64, 1000, 100, 10
+N, D_in, H, D_out = 100, 1000, 100, 10
 
 x = tf.placeholder(tf.float32, shape=(None, D_in))
 y = tf.placeholder(tf.float32, shape=(None, D_out))
@@ -27,7 +27,7 @@ with tf.Session() as sess:
     x_value = np.random.randn(N, D_in)
     y_value = np.random.randn(N, D_out)
     
-    for _ in range(500):
+    for i in range(5000):
         loss_value, _, _ = sess.run([loss, new_w1, new_w2],
                                     feed_dict={x: x_value, y: y_value})
-        print(loss_value)
+        print(i, loss_value)

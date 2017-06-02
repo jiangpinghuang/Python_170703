@@ -1,6 +1,6 @@
 import numpy as np
 
-N, D_in, H, D_out = 1, 2, 2, 1
+N, D_in, H, D_out = 10, 20, 20, 10
 
 x = np.random.randn(N, D_in)
 y = np.random.randn(N, D_out)
@@ -17,9 +17,9 @@ print(w1)
 print('w2: ')
 print(w2)
 
-learning_rate = 1e-2
+learning_rate = 1e-3
 
-for t in range(3):
+for t in range(100):
     h = x.dot(w1)
     print('h: ')
     print(h)

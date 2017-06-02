@@ -70,6 +70,7 @@ optimizer = optim.SGD(model.parameters(), lr=0.1)
 
 inputs = prepare_sequence(training_data[0][0], word_to_ix)
 tag_scores = model(inputs)
+
 print(tag_scores)
 
 for epoch in range(300):
@@ -80,6 +81,7 @@ for epoch in range(300):
         model.hidden = model.init_hidden()
         
         sentence_in = prepare_sequence(sentence, word_to_ix)
+
         targets = prepare_sequence(tags, tag_to_ix)
         
         tag_scores = model(sentence_in)
@@ -89,6 +91,9 @@ for epoch in range(300):
         optimizer.step()
         
 inputs = prepare_sequence(training_data[0][0], word_to_ix)
+print('inputs: ')
+print(training_data[0][0])
+print inputs
 tag_scores = model(inputs)
 
 print(tag_scores)

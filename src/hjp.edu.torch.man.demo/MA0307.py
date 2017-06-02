@@ -1,7 +1,7 @@
 import torch
 from torch.autograd import Variable
 
-N, D_in, H, D_out = 64, 1000, 100, 10
+N, D_in, H, D_out = 1000, 1000, 100, 10
 
 x = Variable(torch.randn(N, D_in))
 y = Variable(torch.randn(N, D_out), requires_grad=False)
@@ -16,7 +16,7 @@ loss_fn = torch.nn.MSELoss(size_average=False)
 
 learning_rate = 1e-4
 
-optimizer = torch.optim.Adam(model.parameters(), lr=learning_rate)
+optimizer = torch.optim.SGD(model.parameters(), lr=learning_rate)
 
 for t in range(500):
     y_pred = model(x)

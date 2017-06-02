@@ -15,7 +15,9 @@ print(data)
 print(F.relu(data))
 
 data = autograd.Variable(torch.randn(2))
+print('data: ')
 print(data)
+print('F.softmax(data): ')
 print(F.softmax(data))
 print(F.softmax(data).sum())
 print(F.log_softmax(data))
@@ -29,7 +31,8 @@ test_data = [("Yo creo que si".split(), "SPANISH"),
              ("it is lost on me".split(), "ENGLISH")]
 
 word_to_ix = {}
-for sent, _ in data + test_data:
+for sent, lab in data + test_data:
+    print sent, lab
     for word in sent:
         if word not in word_to_ix:
             word_to_ix[word] = len(word_to_ix)
@@ -62,6 +65,8 @@ for param in model.parameters():
     print(param)
     
 sample = data[0]
+print data
+print data[0]
 bow_vector = make_bow_vector(sample[0], word_to_ix)
 log_probs = model(autograd.Variable(bow_vector))
 print(log_probs)
@@ -78,7 +83,7 @@ print(next(model.parameters())[:, word_to_ix["creo"]])
 loss_function = nn.NLLLoss()
 optimizer = optim.SGD(model.parameters(), lr=0.1)
 
-for epoch in range(100):
+for epoch in range(2):
     for instance, label in data:
         model.zero_grad()
         
@@ -95,4 +100,7 @@ for instance, label in test_data:
     log_probs = model(bow_vec)
     print(log_probs)
     
-print(next(model.parameters())[:, word_to_ix["creo"]])     
+print(next(model.parameters())[:, word_to_ix["creo"]])   
+print(model.parameters())  
+print(next(model.parameters()))
+#print word_to_ix["creo"]

@@ -74,13 +74,19 @@ x = torch.randn(2, 2)
 y = torch.randn((2, 2))
 print(x)
 print(y)
+print(x+y)
 
 var_x = autograd.Variable(x)
 var_y = autograd.Variable(y)
 
+print(var_x)
+print(var_y)
 var_z = var_x + var_y
+print(var_z)
 print(var_z.creator)
 
 var_z_data = var_z.data 
+print(var_z_data)
 new_var_z = autograd.Variable(var_z_data)
+print(new_var_z)
 print(new_var_z.creator)

@@ -12,12 +12,12 @@ class DynamicNet(torch.nn.Module):
         
     def forward(self, x):
         h_relu = self.input_linear(x).clamp(min=0)
-        for _ in range(random.randint(0, 3)):
+        for i in range(random.randint(0, 3)):
             h_relu = self.middle_lieaner(h_relu).clamp(min=0)
         y_pred = self.output_linear(h_relu)
         return y_pred
     
-N, D_in, H, D_out = 64, 1000, 100, 10
+N, D_in, H, D_out = 100, 1000, 100, 10
 
 x = Variable(torch.randn(N, D_in))
 y = Variable(torch.randn(N, D_out), requires_grad=False)
@@ -26,7 +26,7 @@ model = DynamicNet(D_in, H, D_out)
 
 criterion = torch.nn.MSELoss(size_average=False)
 
-optimizer = torch.optim.SGD(model.parameters(), lr=1e-4, momentum=0.9)
+optimizer = torch.optim.SGD(model.parameters(), lr=1e-5, momentum=0.9)
 
 for t in range(500):
     y_pred = model(x)

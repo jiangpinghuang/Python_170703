@@ -2,6 +2,7 @@ import torch
 from torch.autograd import Variable
 
 class TwoLayerNet(torch.nn.Module):
+    
     def __init__(self, D_in, H, D_out):
         super(TwoLayerNet, self).__init__()
         self.linear1 = torch.nn.Linear(D_in, H)
@@ -12,7 +13,7 @@ class TwoLayerNet(torch.nn.Module):
         y_pred = self.linear2(h_relu)
         return y_pred
     
-N, D_in, H, D_out = 64, 1000, 100, 10
+N, D_in, H, D_out = 100, 1000, 100, 10
 
 x = Variable(torch.randn(N, D_in))
 y = Variable(torch.randn(N, D_out), requires_grad=False)
