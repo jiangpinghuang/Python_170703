@@ -102,6 +102,7 @@ def categoryFromOutput(output):
     category_i = top_i[0][0]
     return all_categories[category_i], category_i
 
+print('categoryFromOutput: ')
 print(categoryFromOutput(output))
 
 import random
