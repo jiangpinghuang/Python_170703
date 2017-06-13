@@ -54,7 +54,7 @@ testlabel = Variable(testlabel)
 net = RevNN(args.embed_dim, args.hiddn_dim, args.num_class)
 print net
 
-criterion = nn.CrossEntropyLoss()
+criterion = nn.NLLLoss()
 
 optimizer = optim.SGD(net.parameters(), lr=args.learning_rate)
 

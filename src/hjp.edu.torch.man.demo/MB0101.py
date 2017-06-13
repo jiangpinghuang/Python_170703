@@ -11,6 +11,7 @@ print(findFiles('/home/hjp/Downloads/data/names/*.txt'))
 
 import unicodedata
 import string
+import torch.nn as nn
 
 all_letters = string.ascii_letters + " .,;'"
 n_letters = len(all_letters)
@@ -98,8 +99,8 @@ output, next_hidden  = rnn(input[0], hidden)
 print(output)
 
 def categoryFromOutput(output):
-    top_n, top_i = output.data.topk(1)
-    category_i = top_i[0][0]
+    top_n, top_i = output.data.topk(1)  # top_n FloatTensor, the max value, top_i is the index of the value in FloatTensor.
+    category_i = top_i[0][0]            # LongTensor to int
     return all_categories[category_i], category_i
 
 print('categoryFromOutput: ')
